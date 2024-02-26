@@ -1,6 +1,7 @@
 import * as cxapi from '@aws-cdk/cx-api';
 import * as chalk from 'chalk';
 import * as fs from 'fs-extra';
+import * as path from "path";
 import { debug, error } from '../../logging';
 import { toYAML } from '../../serialize';
 import { AssetManifestBuilder } from '../../util/asset-manifest-builder';
@@ -68,7 +69,10 @@ export async function makeBodyParameter(
   if (overrideTemplate) {
     // Add a variant of this template
     templateFile = `${stack.templateFile}-${templateHash}.yaml`;
-    await fs.writeFile(templateFile, templateJson, { encoding: 'utf-8' });
+    await fs.writeFile(
+      path.join(stack.assembly.directory, templateFile),
+      // templateFile,
+      templateJson, { encoding: 'utf-8' });
   }
 
   assetManifest.addFileAsset(templateHash, {
